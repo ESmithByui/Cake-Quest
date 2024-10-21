@@ -7,8 +7,8 @@ class Spawner(pygame.sprite.Sprite):
         super().__init__()
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.g_den_inactive = pygame.image.load('images/spawner/g_spawner_1.png')
-        self.g_den_active = pygame.image.load('images/spawner/g_spawner_2.png')
+        self.g_den_inactive = pygame.image.load('images/spawner/g_spawner_1.png').convert_alpha()
+        self.g_den_active = pygame.image.load('images/spawner/g_spawner_2.png').convert_alpha()
         self.image = self.g_den_inactive
         self.rect = self.image.get_rect(midbottom = coord)
         self.cooldown = 0

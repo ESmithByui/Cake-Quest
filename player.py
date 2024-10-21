@@ -16,26 +16,26 @@ class Player(pygame.sprite.Sprite):
         
         #animation
         self.animation_index = 0
-        self.invincible_image = pygame.image.load('images/player/8bit_slime_inv.png')
-        idle_0 = pygame.image.load('images/player/8bit_slime_idle_0.png')
-        idle_1 = pygame.image.load('images/player/8bit_slime_idle_1.png')
+        self.invincible_image = pygame.image.load('images/player/8bit_slime_inv.png').convert_alpha()
+        idle_0 = pygame.image.load('images/player/8bit_slime_idle_0.png').convert_alpha()
+        idle_1 = pygame.image.load('images/player/8bit_slime_idle_1.png').convert_alpha()
         self.idle_frames = [idle_0, idle_0, idle_0, idle_0, idle_0, idle_0, idle_0, idle_0, idle_0, idle_0, idle_1, idle_1]
-        walk_0 = pygame.image.load('images/player/8bit_slime_walk_0.png')
-        walk_1 = pygame.image.load('images/player/8bit_slime_walk_1.png')
+        walk_0 = pygame.image.load('images/player/8bit_slime_walk_0.png').convert_alpha()
+        walk_1 = pygame.image.load('images/player/8bit_slime_walk_1.png').convert_alpha()
         self.walk_frames = [walk_0, walk_1]
-        jump_0 = pygame.image.load('images/player/8bit_slime_jump_0.png')
-        jump_1 = pygame.image.load('images/player/8bit_slime_jump_1.png')
+        jump_0 = pygame.image.load('images/player/8bit_slime_jump_0.png').convert_alpha()
+        jump_1 = pygame.image.load('images/player/8bit_slime_jump_1.png').convert_alpha()
         self.jump_frames = [jump_0, jump_1]
-        fall_0 = pygame.image.load('images/player/8bit_slime_fall_0.png')
-        fall_1 = pygame.image.load('images/player/8bit_slime_fall_1.png')
+        fall_0 = pygame.image.load('images/player/8bit_slime_fall_0.png').convert_alpha()
+        fall_1 = pygame.image.load('images/player/8bit_slime_fall_1.png').convert_alpha()
         self.fall_frames = [fall_0, fall_1]
-        attack_0 = pygame.image.load('images/player/8bit_slime_attack_0.png')
-        attack_1 = pygame.image.load('images/player/8bit_slime_attack_1.png')
-        attack_2 = pygame.image.load('images/player/8bit_slime_attack_2.png')
-        attack_3 = pygame.image.load('images/player/8bit_slime_attack_3.png')
-        attack_4 = pygame.image.load('images/player/8bit_slime_attack_4.png')
+        attack_0 = pygame.image.load('images/player/8bit_slime_attack_0.png').convert_alpha()
+        attack_1 = pygame.image.load('images/player/8bit_slime_attack_1.png').convert_alpha()
+        attack_2 = pygame.image.load('images/player/8bit_slime_attack_2.png').convert_alpha()
+        attack_3 = pygame.image.load('images/player/8bit_slime_attack_3.png').convert_alpha()
+        attack_4 = pygame.image.load('images/player/8bit_slime_attack_4.png').convert_alpha()
         self.attack_frames = [attack_0,attack_1,attack_2,attack_3,attack_4,attack_4]
-        crouch = pygame.image.load('images/player/8bit_slime_squish.png')   
+        crouch = pygame.image.load('images/player/8bit_slime_squish.png').convert_alpha()   
         self.crouch_frames = [crouch]
         self.animation_frames = self.idle_frames
 

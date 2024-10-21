@@ -38,13 +38,13 @@ class Health_piece():
     def __init__(self, coord, screen):
         self.coord = coord
         self.full = True
-        hp_full_1 = pygame.image.load('images/hp_bar/hp_bar_1.png')
-        hp_full_2 = pygame.image.load('images/hp_bar/hp_bar_2.png')
-        hp_full_3 = pygame.image.load('images/hp_bar/hp_bar_3.png')
+        hp_full_1 = pygame.image.load('images/hp_bar/hp_bar_1.png').convert_alpha()
+        hp_full_2 = pygame.image.load('images/hp_bar/hp_bar_2.png').convert_alpha()
+        hp_full_3 = pygame.image.load('images/hp_bar/hp_bar_3.png').convert_alpha()
         self.hp_full_frames = [hp_full_1,hp_full_2,hp_full_3]
-        hp_empty_1 = pygame.image.load('images/hp_bar/hp_bar_empty_1.png')
-        hp_empty_2 = pygame.image.load('images/hp_bar/hp_bar_empty_2.png')
-        hp_empty_3 = pygame.image.load('images/hp_bar/hp_bar_empty_3.png')
+        hp_empty_1 = pygame.image.load('images/hp_bar/hp_bar_empty_1.png').convert_alpha()
+        hp_empty_2 = pygame.image.load('images/hp_bar/hp_bar_empty_2.png').convert_alpha()
+        hp_empty_3 = pygame.image.load('images/hp_bar/hp_bar_empty_3.png').convert_alpha()
         self.hp_empty_frames = [hp_empty_1,hp_empty_2,hp_empty_3]
         self.screen = screen
 

@@ -5,12 +5,12 @@ class Player_melee(pygame.sprite.Sprite):
     def __init__(self, player):
         super().__init__()
         self.player = player
-        self.melee_standby = pygame.image.load('images/player/cudgel_0.png')
-        melee_1 = pygame.image.load('images/player/cudgel_1.png')
-        melee_2 = pygame.image.load('images/player/cudgel_2.png')
-        melee_3 = pygame.image.load('images/player/cudgel_3.png')
-        melee_4 = pygame.image.load('images/player/cudgel_4.png')
-        melee_5 = pygame.image.load('images/player/cudgel_5.png')
+        self.melee_standby = pygame.image.load('images/player/cudgel_0.png').convert_alpha()
+        melee_1 = pygame.image.load('images/player/cudgel_1.png').convert_alpha()
+        melee_2 = pygame.image.load('images/player/cudgel_2.png').convert_alpha()
+        melee_3 = pygame.image.load('images/player/cudgel_3.png').convert_alpha()
+        melee_4 = pygame.image.load('images/player/cudgel_4.png').convert_alpha()
+        melee_5 = pygame.image.load('images/player/cudgel_5.png').convert_alpha()
         self.melee_frames = [self.melee_standby, melee_1,melee_2,melee_3,melee_4,melee_5]
         self.active = False
         self.image = self.melee_standby

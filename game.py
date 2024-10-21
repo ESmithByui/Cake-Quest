@@ -219,7 +219,7 @@ screen_w = 1200
 screen_h = 800
 screen = pygame.display.set_mode((screen_w,screen_h))
 pygame.display.set_caption('Cake Quest')
-pygame.display.set_icon(pygame.image.load('images/player/8bit_square_slime_icon.png'))
+pygame.display.set_icon(pygame.image.load('images/player/8bit_square_slime_icon.png').convert_alpha())
 clock = pygame.time.Clock()
 font = pygame.font.Font('fonts/slkscr.ttf',50)
 
@@ -249,7 +249,7 @@ platforms = pygame.sprite.Group()
 
 goal = pygame.sprite.GroupSingle()
 
-pause_screen = pygame.image.load('images/paused.png')
+pause_screen = pygame.image.load('images/paused.png').convert_alpha()
 pause_rect = pause_screen.get_rect(topleft = (0,0))
 
 
@@ -265,7 +265,7 @@ end_screen.add(End_load())
 test_background = pygame.Surface((screen_w,screen_h))
 test_background.fill('#87CEEB')
 
-test_top_dash = pygame.image.load('images/dash_bar.png')
+test_top_dash = pygame.image.load('images/dash_bar.png').convert_alpha()
 test_top_rect = test_top_dash.get_rect(topleft = (0,0))
 
 spawn_timer = pygame.USEREVENT + 1

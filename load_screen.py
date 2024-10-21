@@ -5,10 +5,10 @@ class Load_screen(pygame.sprite.Sprite):
         super().__init__()
         self.screen_h = screen_h
         #font size 72 paint.net
-        self.load_basic = pygame.image.load('images/load_screens/loading_basic.png')
-        self.load_1 = pygame.image.load('images/load_screens/load_level_1.png')
-        self.load_2 = pygame.image.load('images/load_screens/load_level_2.png')
-        self.load_final = pygame.image.load('images/load_screens/load_level_final.png')
+        self.load_basic = pygame.image.load('images/load_screens/loading_basic.png').convert_alpha()
+        self.load_1 = pygame.image.load('images/load_screens/load_level_1.png').convert_alpha()
+        self.load_2 = pygame.image.load('images/load_screens/load_level_2.png').convert_alpha()
+        self.load_final = pygame.image.load('images/load_screens/load_level_final.png').convert_alpha()
         self.image = self.load_1
         self.rect = self.image.get_rect(bottomleft = (0,-5))
         self.speed = 0
