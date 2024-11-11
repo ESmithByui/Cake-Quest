@@ -1,6 +1,6 @@
 import pygame
 import random
-from roller import Roller
+from walker import Walker
 
 class Spawner(pygame.sprite.Sprite):
     def __init__(self, coord, screen_w, screen_h):
@@ -12,7 +12,7 @@ class Spawner(pygame.sprite.Sprite):
         self.image = self.g_den_inactive
         self.rect = self.image.get_rect(midbottom = coord)
         self.cooldown = 0
-        self.enemy_types = ['roller']
+        self.enemy_types = ['walker']
 
     def update(self):
         if self.cooldown > 0:
@@ -22,12 +22,13 @@ class Spawner(pygame.sprite.Sprite):
             self.image = self.g_den_inactive
         
 
-    def spawn(self, enemies):
+    def spawn(self, enemies, deco):
         if self.cooldown <= 0:
             enemy = random.choice(self.enemy_types)
             self.cooldown = 500
-            if enemy == 'roller':
-                enemies.add(Roller(self.rect.midbottom, self.screen_w, self.screen_h))
+            if enemy == 'walker':
+                var = random.choice([0,1])
+                enemies.add(Walker(self.rect.midbottom, self.screen_w, self.screen_h, deco, var))
             
 
     

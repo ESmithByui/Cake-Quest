@@ -96,13 +96,14 @@ def player_take_melee(player, enemies):
     if pygame.sprite.spritecollide(player, enemies, False):
         player.damage()
 
-def spawner_active(spawners, enemies):
+def spawner_active(spawners, enemies, e_deco):
     sprite_list = spawners.sprites()
     if len(sprite_list) > 1:
-        random.choice(sprite_list).spawn(enemies)
+        random.choice(sprite_list).spawn(enemies, e_deco)
 
-def load_level_1(player, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background, foreground, goal):
+def load_level_1(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
+    e_deco.empty()
     enemies.empty()
     platforms.empty()
     spawners.empty()
@@ -137,8 +138,9 @@ def load_level_1(player, player_projectiles, enemies, platforms, spawners, scree
     spawners.add(Spawner((200,450), screen_w, screen_h))
     spawners.add(Spawner((1000,450), screen_w, screen_h))
 
-def load_level_2(player, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background, foreground):
+def load_level_2(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground):
     player_projectiles.empty()
+    e_deco.empty()
     enemies.empty()
     platforms.empty()
     spawners.empty()
@@ -171,8 +173,9 @@ def load_level_2(player, player_projectiles, enemies, platforms, spawners, scree
     spawners.add(Spawner((100,750), screen_w, screen_h))
     spawners.add(Spawner((1100,650), screen_w, screen_h))
 
-def load_level_end(player, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background, foreground, goal):
+def load_level_end(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
+    e_deco.empty()
     enemies.empty()
     platforms.empty()
     spawners.empty()
@@ -244,6 +247,7 @@ foreground.add(Foreground())
 spawners = pygame.sprite.Group()
 
 enemies = pygame.sprite.Group()
+e_deco = pygame.sprite.Group()
 
 platforms = pygame.sprite.Group()
 
@@ -283,7 +287,7 @@ while True:
             pygame.quit()
             exit()
         if event.type == spawn_timer and game_active and not paused and not loading:
-            spawner_active(spawners, enemies)
+            spawner_active(spawners, enemies, e_deco)
         if event.type == pygame.KEYDOWN and game_active and not loading:
             if event.key == pygame.K_ESCAPE:
                 if paused:
@@ -342,6 +346,7 @@ while True:
             spawners.draw(screen)
             player.draw(screen)
             enemies.draw(screen)
+            e_deco.draw(screen)
             platforms.draw(screen)
             foreground.draw(screen)
             screen.blit(test_top_dash,test_top_rect)
@@ -351,7 +356,7 @@ while True:
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_1(player.sprite, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
+            load_level_1(player.sprite, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
             load_screen.sprite.load = False
             score.sprite.score = 0
         if not load_screen.sprite.active:
@@ -365,6 +370,7 @@ while True:
         player_projectiles.draw(screen)
         player.draw(screen)
         enemies.draw(screen)
+        e_deco.draw(screen)
         platforms.draw(screen)
         foreground.draw(screen)
         screen.blit(test_top_dash,test_top_rect)
@@ -374,7 +380,7 @@ while True:
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_2(player.sprite, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite)
+            load_level_2(player.sprite, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite)
             load_screen.sprite.load = False
             player.sprite.attack = False
             player.sprite.attack_index = 0
@@ -393,6 +399,7 @@ while True:
         player_projectiles.draw(screen)
         player.draw(screen)
         enemies.draw(screen)
+        e_deco.draw(screen)
         platforms.draw(screen)
         foreground.draw(screen)
         screen.blit(test_top_dash,test_top_rect)
@@ -402,7 +409,7 @@ while True:
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_end(player.sprite, player_projectiles, enemies, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
+            load_level_end(player.sprite, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
             load_screen.sprite.load = False
             player.sprite.attack = False
             player.sprite.attack_index = 0
@@ -435,7 +442,9 @@ while True:
         player_projectiles.update()
 
         enemies.draw(screen)
+        e_deco.draw(screen)
         enemies.update()
+        e_deco.update()
 
         platforms.draw(screen)
 

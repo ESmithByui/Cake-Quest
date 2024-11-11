@@ -2,30 +2,37 @@ import pygame
 import random
 from enemy_deco import Enemy_deco
 
-class Roller(pygame.sprite.Sprite):
-    def __init__(self, coord, screen_w, screen_h, deco):
+class Walker(pygame.sprite.Sprite):
+    def __init__(self, coord, screen_w, screen_h, deco, var):
         super().__init__()
-        roller_1 = pygame.image.load('images/roller/r_roller_1.png').convert_alpha()
-        roller_2 = pygame.image.load('images/roller/r_roller_2.png').convert_alpha()
+        self.image = pygame.image.load('images/enemies/walker/0/walk_0.png').convert_alpha()
+        self.rect = self.image.get_rect(midbottom = (coord))
+
+        if var == 1:
+            walk_0 = pygame.image.load('images/enemies/walker/1/walk_0.png').convert_alpha()
+            walk_1 = pygame.image.load('images/enemies/walker/1/walk_1.png').convert_alpha()
+            walk_2 = pygame.image.load('images/enemies/walker/1/walk_2.png').convert_alpha()
+            deco.add(Enemy_deco(self,1,1))
+            self.speed = 2
+
+        else:
+            walk_0 = pygame.image.load('images/enemies/walker/0/walk_0.png').convert_alpha()
+            walk_1 = pygame.image.load('images/enemies/walker/0/walk_1.png').convert_alpha()
+            walk_2 = pygame.image.load('images/enemies/walker/0/walk_2.png').convert_alpha()
+            deco.add(Enemy_deco(self,1,0))
+            self.speed = 2
 
 
-        test_walk_0 = pygame.image.load('images/enemy/test_enemy_walk_0.png').convert_alpha()
-        test_walk_1 = pygame.image.load('images/enemy/test_enemy_walk_1.png').convert_alpha()
-        test_walk_2 = pygame.image.load('images/enemy/test_enemy_walk_2.png').convert_alpha()
-        self.frames = [test_walk_0,test_walk_1,test_walk_0,test_walk_2]
-        #self.frames = [roller_1,roller_2]
+        self.frames = [walk_0,walk_1,walk_0,walk_2]
         self.animation_index = 0
         self.image = self.frames[self.animation_index]
         self.rect = self.image.get_rect(midbottom = (coord))
         self.gravity = 0
         self.screen_w = screen_w
         self.screen_h = screen_h
-        self.speed = 2
         choices = [True, False]
         self.left = random.choice(choices)
         self.in_air = False
-
-        deco.add(Enemy_deco(self))
 
     def apply_gravity(self):
         if self.in_air:
