@@ -4,8 +4,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen_w, screen_h):
         super().__init__()
         surf = pygame.image.load('images/player/8bit_slime.png').convert_alpha()
-        self.player_walk = surf
-        self.image = self.player_walk
+        self.image = surf
         self.rect = self.image.get_rect(midbottom = (200, 200))
         self.gravity = 0
         self.screen_w = screen_w
@@ -13,6 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.speed = 6
         self.left = False
         self.in_air = False
+        
         
         #animation
         self.animation_index = 0
@@ -39,6 +39,15 @@ class Player(pygame.sprite.Sprite):
         self.crouch_frames = [crouch]
         self.animation_frames = self.idle_frames
 
+        death_0 = pygame.image.load('images/player/8bit_slime_death_0.png').convert_alpha()
+        death_1 = pygame.image.load('images/player/8bit_slime_death_1.png').convert_alpha()
+        death_2 = pygame.image.load('images/player/8bit_slime_death_2.png').convert_alpha()
+        death_3 = pygame.image.load('images/player/8bit_slime_death_3.png').convert_alpha()
+        death_4 = pygame.image.load('images/player/8bit_slime_death_4.png').convert_alpha()
+        death_5 = pygame.image.load('images/player/8bit_slime_death_5.png').convert_alpha()
+        death_6 = pygame.image.load('images/player/8bit_slime_death_6.png').convert_alpha()
+        self.death_frames = [death_0,death_1,death_2,death_3,death_4,death_5,death_6]
+
 
         #attacks
         self.throw_projectile = False
@@ -53,10 +62,12 @@ class Player(pygame.sprite.Sprite):
         self.health = self.max_health
         self.invincible = False
         self.invincibility_frames = 0
+        self.dead = False
+        self.finish = False
 
     def player_input(self):
         keys = pygame.key.get_pressed()
-        if not self.attack:
+        if not self.attack and not self.dead:
             if keys[pygame.K_q] and self.attack_cooldown <= 0:
                 if not self.throw_projectile:
                     self.animation_index = 0
@@ -124,14 +135,18 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
 
     def update(self):
-        self.animation_frames = self.idle_frames
-        self.player_input()
-        self.player_attack()
-        self.apply_gravity()
-        self.animation_state()
-        if self.invincibility_frames > 0:
-            self.invincibility_frames -= 1
-        else: self.invincible = False
+        if not self.dead:
+            self.animation_frames = self.idle_frames
+            self.player_input()
+            self.player_attack()
+            self.apply_gravity()
+            self.animation_state()
+            if self.invincibility_frames > 0:
+                self.invincibility_frames -= 1
+            else: self.invincible = False
+        else:
+            self.apply_gravity()
+            self.death_animation()
 
     def player_attack(self):
         if self.attack_cooldown > 0:
@@ -156,3 +171,31 @@ class Player(pygame.sprite.Sprite):
             self.health -= 1
             self.invincibility_frames = 100
             self.invincible = True
+
+        if self.health <= 0:
+            self.dead = True
+            self.invincibility_frames = 0
+            self.invincible = False
+            self.animation_index = 0
+
+    def death_animation(self):
+        if self.dead:
+            self.animation_index += 0.1
+            if self.animation_index >= len(self.death_frames): 
+                self.animation_index = len(self.death_frames) - 1
+                self.finish = True
+            self.image = self.death_frames[int(self.animation_index)]
+            if self.left:
+                self.image = pygame.transform.flip(self.image, True, False)
+            self.rect = self.image.get_rect(midbottom = self.rect.midbottom)
+
+    def reset(self):
+        self.max_health = 3
+        self.health = self.max_health
+        self.invincibility_frames = 0
+        self.dead = False
+        self.finish = False
+        self.animation_index = 0
+        self.animation_frames = self.idle_frames
+        self.image = self.animation_frames[self.animation_index]
+        self.left = False

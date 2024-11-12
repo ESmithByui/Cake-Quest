@@ -7,6 +7,7 @@ from background import Background
 from foreground import Foreground
 from load_screen import Load_screen
 from ending_load import End_load
+from black_screen import Game_over_load
 from player import Player
 from player_projectile import Player_projectile
 from player_melee import Player_melee
@@ -96,10 +97,10 @@ def player_take_melee(player, enemies):
     if pygame.sprite.spritecollide(player, enemies, False):
         player.damage()
 
-def spawner_active(spawners, enemies, e_deco):
+def spawner_active(spawners):
     sprite_list = spawners.sprites()
     if len(sprite_list) > 1:
-        random.choice(sprite_list).spawn(enemies, e_deco)
+        random.choice(sprite_list).activate()
 
 def load_level_1(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
@@ -109,8 +110,7 @@ def load_level_1(player, player_projectiles, enemies, e_deco, platforms, spawner
     spawners.empty()
     goal.empty()
     player.rect.midbottom = (600,350)
-    player.health = player.max_health
-    player.invincibility_frames = 0
+    player.reset()
     
     background.update(1)
     foreground.update(1)
@@ -133,10 +133,11 @@ def load_level_1(player, player_projectiles, enemies, e_deco, platforms, spawner
 
 
     #spawners
-    spawners.add(Spawner((200,225), screen_w, screen_h))
-    spawners.add(Spawner((1000,225), screen_w, screen_h))
-    spawners.add(Spawner((200,450), screen_w, screen_h))
-    spawners.add(Spawner((1000,450), screen_w, screen_h))
+    enemy_list = ['walker']
+    spawners.add(Spawner((200,225), screen_w, screen_h, enemies, e_deco, enemy_list, 1))
+    spawners.add(Spawner((1000,225), screen_w, screen_h, enemies, e_deco, enemy_list, 1))
+    spawners.add(Spawner((200,450), screen_w, screen_h, enemies, e_deco, enemy_list, 1))
+    spawners.add(Spawner((1000,450), screen_w, screen_h, enemies, e_deco, enemy_list, 1))
 
 def load_level_2(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground):
     player_projectiles.empty()
@@ -166,12 +167,13 @@ def load_level_2(player, player_projectiles, enemies, e_deco, platforms, spawner
 
 
     #spawners
-    spawners.add(Spawner((700,150), screen_w, screen_h))
-    spawners.add(Spawner((800,150), screen_w, screen_h))
-    spawners.add(Spawner((900,150), screen_w, screen_h))
-    spawners.add(Spawner((1000,150), screen_w, screen_h))
-    spawners.add(Spawner((100,750), screen_w, screen_h))
-    spawners.add(Spawner((1100,650), screen_w, screen_h))
+    enemy_list = ['walker']
+    spawners.add(Spawner((700,150), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
+    spawners.add(Spawner((800,150), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
+    spawners.add(Spawner((900,150), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
+    spawners.add(Spawner((1000,150), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
+    spawners.add(Spawner((100,750), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
+    spawners.add(Spawner((1100,650), screen_w, screen_h, enemies, e_deco, enemy_list, 2))
 
 def load_level_end(player, player_projectiles, enemies, e_deco, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
@@ -266,6 +268,9 @@ load_screen.add(Load_screen(screen_h))
 end_screen = pygame.sprite.GroupSingle()
 end_screen.add(End_load())
 
+game_over = pygame.sprite.GroupSingle()
+game_over.add(Game_over_load())
+
 test_background = pygame.Surface((screen_w,screen_h))
 test_background.fill('#87CEEB')
 
@@ -287,7 +292,7 @@ while True:
             pygame.quit()
             exit()
         if event.type == spawn_timer and game_active and not paused and not loading:
-            spawner_active(spawners, enemies, e_deco)
+            spawner_active(spawners)
         if event.type == pygame.KEYDOWN and game_active and not loading:
             if event.key == pygame.K_ESCAPE:
                 if paused:
@@ -318,6 +323,8 @@ while True:
         
         end_screen.draw(screen)
         end_screen.update()
+        game_over.draw(screen)
+        game_over.update()
 
     if game_active and paused:
         background.draw(screen)
@@ -465,10 +472,10 @@ while True:
         score.update()
         hp_bar.draw()
 
-        if player.sprite.health <= 0:
-            menu.text = 'Game Over'
-            menu.options[0].text = 'Restart'
-            game_active = False
+        if player.sprite.finish:
+            game_over.sprite.active = True
+
+            #game_active = False
         elif score.sprite.score >= 10 and level == 1:
             pygame.time.set_timer(spawn_timer,0)
             loading = True
@@ -491,6 +498,15 @@ while True:
         if end_screen.sprite.alpha >= 255:
             menu.text = 'The End!'
             menu.options[0].text = 'Play Again'
+            game_active = False
+        if game_over.sprite.active:
+            if player.sprite.finish:
+                game_over.draw(screen)
+            game_over.update()
+        if game_over.sprite.alpha >= 255:
+            menu.text = 'Game Over'
+            menu.options[0].text = 'Restart'
+            background.update(0)
             game_active = False
 
     pygame.display.update()
