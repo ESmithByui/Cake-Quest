@@ -1,12 +1,17 @@
 import pygame
 import random
 from enemy_deco import Enemy_deco
+from enemy_death import Enemy_death
+from float_score import Float_score
 
 class Walker(pygame.sprite.Sprite):
-    def __init__(self, coord, screen_w, screen_h, deco, var):
+    def __init__(self, coord, screen_w, screen_h, deco, var, death_animations):
         super().__init__()
         self.image = pygame.image.load('images/enemies/walker/0/walk_0.png').convert_alpha()
         self.rect = self.image.get_rect(midbottom = (coord))
+        self.death_animations = death_animations
+        self.var = var
+        self.score = 1
 
         if var == 1:
             walk_0 = pygame.image.load('images/enemies/walker/1/walk_0.png').convert_alpha()
@@ -72,3 +77,10 @@ class Walker(pygame.sprite.Sprite):
         self.move()
         self.apply_gravity()
         self.destroy()
+
+    def death(self):
+        self.death_animations.add(Float_score(self.rect.midbottom, self.score))
+        self.death_animations.add(Enemy_death(self.rect.midbottom,1, self.var, self.left))
+        self.kill()
+
+    

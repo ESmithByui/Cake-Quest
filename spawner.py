@@ -3,7 +3,7 @@ import random
 from walker import Walker
 
 class Spawner(pygame.sprite.Sprite):
-    def __init__(self, coord, screen_w, screen_h, enemies, deco, enemy_list, var = 0):
+    def __init__(self, coord, screen_w, screen_h, enemies, deco, enemy_list, death_list, var = 0):
         super().__init__()
         self.screen_w = screen_w
         self.screen_h = screen_h
@@ -11,6 +11,7 @@ class Spawner(pygame.sprite.Sprite):
         self.deco = deco
         self.var = var
         self.enemy_list = enemy_list
+        self.death_list = death_list
         self.spawned = False
 
         if self.var == 1:
@@ -54,7 +55,7 @@ class Spawner(pygame.sprite.Sprite):
     def spawn(self):
         enemy = random.choice(self.enemy_list)
         if enemy == 'walker':
-            self.enemies.add(Walker(self.rect.midbottom, self.screen_w, self.screen_h, self.deco, self.var))
+            self.enemies.add(Walker(self.rect.midbottom, self.screen_w, self.screen_h, self.deco, self.var, self.death_list))
         self.spawned = True
             
     def activate(self):

@@ -16,6 +16,6 @@ class Scoreboard(pygame.sprite.Sprite):
         
 
 
-    def add_score(self):
-        self.score += 1
+    def add_score(self, points):
+        self.score += points
     
