@@ -8,6 +8,9 @@ class Float_score(pygame.sprite.Sprite):
 
         if score == 1:
             self.image = pygame.image.load('images/enemies/scores/1.png').convert_alpha()
+        elif score == 2:
+            self.image = pygame.image.load('images/enemies/scores/2.png').convert_alpha()
+            
         else:
             self.image = pygame.image.load('images/enemies/scores/1.png').convert_alpha()
 

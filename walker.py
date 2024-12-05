@@ -12,21 +12,45 @@ class Walker(pygame.sprite.Sprite):
         self.death_animations = death_animations
         self.var = var
         self.score = 1
+        self.speed = 2
+        self.gravity = 0
+
+        variants = ''
+        self.color = 0
+        
 
         if var == 1:
-            walk_0 = pygame.image.load('images/enemies/walker/1/walk_0.png').convert_alpha()
-            walk_1 = pygame.image.load('images/enemies/walker/1/walk_1.png').convert_alpha()
-            walk_2 = pygame.image.load('images/enemies/walker/1/walk_2.png').convert_alpha()
+            folder = '1'
+            if random.randint(0,1) == 1:
+                variants = '/1'
+                self.color = 1
             deco.add(Enemy_deco(self,1,1))
-            self.speed = 2
+
+
+        elif var == 2:
+            folder = '2'
+            randint = random.randint(0,2)
+            if randint == 1:
+                variants = '/1'
+                self.color = 1
+                deco.add(Enemy_deco(self,1,2,1))
+                self.gravity = 100
+                
+            elif randint == 2:
+                variants = '/2'
+                self.color = 2
+                deco.add(Enemy_deco(self,1,2,2))
+                self.speed = 1
+            else:
+                deco.add(Enemy_deco(self,1,2))
 
         else:
-            walk_0 = pygame.image.load('images/enemies/walker/0/walk_0.png').convert_alpha()
-            walk_1 = pygame.image.load('images/enemies/walker/0/walk_1.png').convert_alpha()
-            walk_2 = pygame.image.load('images/enemies/walker/0/walk_2.png').convert_alpha()
+            folder = '0'
             deco.add(Enemy_deco(self,1,0))
-            self.speed = 2
 
+        walk_0 = pygame.image.load(f'images/enemies/walker/{folder}{variants}/walk_0.png').convert_alpha()
+        walk_1 = pygame.image.load(f'images/enemies/walker/{folder}{variants}/walk_1.png').convert_alpha()
+        walk_2 = pygame.image.load(f'images/enemies/walker/{folder}{variants}/walk_2.png').convert_alpha()
 
         self.frames = [walk_0,walk_1,walk_0,walk_2]
         self.animation_index = 0
@@ -80,7 +104,7 @@ class Walker(pygame.sprite.Sprite):
 
     def death(self):
         self.death_animations.add(Float_score(self.rect.midbottom, self.score))
-        self.death_animations.add(Enemy_death(self.rect.midbottom,1, self.var, self.left))
+        self.death_animations.add(Enemy_death(self.rect.midbottom, self.left ,1, self.var, self.color))
         self.kill()
 
     

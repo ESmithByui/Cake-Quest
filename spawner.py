@@ -1,9 +1,10 @@
 import pygame
 import random
 from walker import Walker
+from lobber import Lobber
 
 class Spawner(pygame.sprite.Sprite):
-    def __init__(self, coord, screen_w, screen_h, enemies, deco, enemy_list, death_list, var = 0):
+    def __init__(self, coord, screen_w, screen_h, enemies, deco, enemy_list, death_list, projectile_list, var = 0):
         super().__init__()
         self.screen_w = screen_w
         self.screen_h = screen_h
@@ -12,6 +13,7 @@ class Spawner(pygame.sprite.Sprite):
         self.var = var
         self.enemy_list = enemy_list
         self.death_list = death_list
+        self.projectile_list = projectile_list
         self.spawned = False
 
         if self.var == 1:
@@ -20,6 +22,12 @@ class Spawner(pygame.sprite.Sprite):
             alert_1 = pygame.image.load('images/spawner/1/alert_1.png').convert_alpha()
             alert_2 = pygame.image.load('images/spawner/1/alert_2.png').convert_alpha()
             alert_3 = pygame.image.load('images/spawner/1/alert_3.png').convert_alpha()
+        elif self.var == 2:
+            self.active = pygame.image.load('images/spawner/2/active.png').convert_alpha()
+            self.inactive = pygame.image.load('images/spawner/2/inactive.png').convert_alpha()
+            alert_1 = pygame.image.load('images/spawner/2/alert_1.png').convert_alpha()
+            alert_2 = pygame.image.load('images/spawner/2/alert_2.png').convert_alpha()
+            alert_3 = pygame.image.load('images/spawner/2/alert_3.png').convert_alpha()
         else:
             self.active = pygame.image.load('images/spawner/1/active.png').convert_alpha()
             self.inactive = pygame.image.load('images/spawner/1/inactive.png').convert_alpha()
@@ -56,6 +64,8 @@ class Spawner(pygame.sprite.Sprite):
         enemy = random.choice(self.enemy_list)
         if enemy == 'walker':
             self.enemies.add(Walker(self.rect.midbottom, self.screen_w, self.screen_h, self.deco, self.var, self.death_list))
+        elif enemy == 'lobber':
+            self.enemies.add(Lobber(self.rect.midbottom,self.screen_w,self.screen_h,self.deco, self.var ,self.death_list, self.projectile_list))
         self.spawned = True
             
     def activate(self):

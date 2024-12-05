@@ -13,7 +13,6 @@ from player_projectile import Player_projectile
 from player_melee import Player_melee
 from health_bar import Health_bar
 from spawner import Spawner
-from roller import Roller
 from platform_contrustor import Platform_contructor
 from goal import Goal
 
@@ -102,7 +101,7 @@ def spawner_active(spawners):
     if len(sprite_list) > 1:
         random.choice(sprite_list).activate()
 
-def load_level_1(player, player_projectiles, enemies, e_deco, death_animations, platforms, spawners, screen_w, screen_h, background, foreground, goal):
+def load_level_1(player, player_projectiles, enemies, e_deco, death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
     e_deco.empty()
     enemies.empty()
@@ -135,12 +134,12 @@ def load_level_1(player, player_projectiles, enemies, e_deco, death_animations, 
 
     #spawners
     enemy_list = ['walker']
-    spawners.add(Spawner((200,225), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 1))
-    spawners.add(Spawner((1000,225), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 1))
-    spawners.add(Spawner((200,450), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 1))
-    spawners.add(Spawner((1000,450), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 1))
+    spawners.add(Spawner((200,225), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 1))
+    spawners.add(Spawner((1000,225), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 1))
+    spawners.add(Spawner((200,450), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 1))
+    spawners.add(Spawner((1000,450), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 1))
 
-def load_level_2(player, player_projectiles, enemies, e_deco, death_animations, platforms, spawners, screen_w, screen_h, background, foreground):
+def load_level_2(player, player_projectiles, enemies, e_deco, death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background, foreground):
     player_projectiles.empty()
     e_deco.empty()
     enemies.empty()
@@ -169,15 +168,15 @@ def load_level_2(player, player_projectiles, enemies, e_deco, death_animations, 
 
 
     #spawners
-    enemy_list = ['walker']
-    spawners.add(Spawner((700,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
-    spawners.add(Spawner((800,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
-    spawners.add(Spawner((900,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
-    spawners.add(Spawner((1000,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
-    spawners.add(Spawner((100,750), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
-    spawners.add(Spawner((1100,650), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, 2))
+    enemy_list = ['walker','walker','walker','walker','walker','walker','walker','walker','walker','lobber']
+    spawners.add(Spawner((700,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 2))
+    spawners.add(Spawner((800,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 2))
+    spawners.add(Spawner((900,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 2))
+    spawners.add(Spawner((1000,150), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 2))
+    spawners.add(Spawner((100,750), screen_w, screen_h, enemies, e_deco, ['lobber'], death_animations, e_projectiles, 2))
+    spawners.add(Spawner((1100,650), screen_w, screen_h, enemies, e_deco, enemy_list, death_animations, e_projectiles, 2))
 
-def load_level_end(player, player_projectiles, enemies, e_deco, death_animations, platforms, spawners, screen_w, screen_h, background, foreground, goal):
+def load_level_end(player, player_projectiles, enemies, e_deco, death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background, foreground, goal):
     player_projectiles.empty()
     e_deco.empty()
     enemies.empty()
@@ -254,6 +253,7 @@ spawners = pygame.sprite.Group()
 enemies = pygame.sprite.Group()
 e_deco = pygame.sprite.Group()
 e_death_animations = pygame.sprite.Group()
+e_projectiles = pygame.sprite.Group()
 
 platforms = pygame.sprite.Group()
 
@@ -366,11 +366,13 @@ while True:
             hp_bar.draw()
             e_death_animations.draw(screen)
             e_death_animations.update()
+            e_projectiles.draw(screen)
+            e_projectiles.update()
 
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_1(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
+            load_level_1(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
             load_screen.sprite.load = False
             score.sprite.score = 0
         if not load_screen.sprite.active:
@@ -392,11 +394,13 @@ while True:
         hp_bar.draw()
         e_death_animations.draw(screen)
         e_death_animations.update()
+        e_projectiles.draw(screen)
+        e_projectiles.update()
 
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_2(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite)
+            load_level_2(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite)
             load_screen.sprite.load = False
             player.sprite.attack = False
             player.sprite.attack_index = 0
@@ -423,11 +427,13 @@ while True:
         hp_bar.draw()
         e_death_animations.draw(screen)
         e_death_animations.update()
+        e_projectiles.draw(screen)
+        e_projectiles.update()
 
         load_screen.draw(screen)
         load_screen.update()
         if load_screen.sprite.load:
-            load_level_end(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
+            load_level_end(player.sprite, player_projectiles, enemies, e_deco, e_death_animations, e_projectiles, platforms, spawners, screen_w, screen_h, background.sprite, foreground.sprite, goal)
             load_screen.sprite.load = False
             player.sprite.attack = False
             player.sprite.attack_index = 0
@@ -462,18 +468,25 @@ while True:
         enemies.draw(screen)
         e_deco.draw(screen)
         enemies.update()
+        e_projectiles.update()
         
 
         platforms.draw(screen)
 
         player_projectile_collision(enemies, player_projectiles, score.sprite)
         projectile_collision(platforms, player_projectiles)
+        player_projectile_collision(e_projectiles, player_projectiles, score.sprite)
+        projectile_collision(platforms, e_projectiles)
         player_melee_collision(player_melee.sprite, enemies, score.sprite)
+        player_melee_collision(player_melee.sprite, e_projectiles, score.sprite)
 
         e_deco.update()
 
         e_death_animations.draw(screen)
         e_death_animations.update()
+
+        e_projectiles.draw(screen)
+        
 
 
         block_collision(player.sprite,platforms)
@@ -481,6 +494,7 @@ while True:
             eblock_collision(enemy,platforms)
 
         player_take_melee(player.sprite, enemies)
+        player_take_melee(player.sprite, e_projectiles)
 
         foreground.draw(screen)
         screen.blit(test_top_dash,test_top_rect)

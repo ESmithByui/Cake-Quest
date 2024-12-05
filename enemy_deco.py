@@ -2,19 +2,37 @@ import pygame
 import random
 
 class Enemy_deco(pygame.sprite.Sprite):
-    def __init__(self, enemy, type, var):
+    def __init__(self, enemy, type, var, color = 0):
         super().__init__()
         self.enemy = enemy
 
-        if type == 1:
-            if var == 1:
-                self.deco = pygame.image.load('images/enemies/walker/1/top_deco.png')
-            else:
-                self.deco = pygame.image.load('images/enemies/walker/0/top_deco.png')
+        if color == 0:
+            folder_color = ''
         else:
-            self.deco = pygame.image.load('images/enemies/walker/0/top_deco.png')
+            folder_color = f'/{color}'
+
+        if type == 1:
+            folder_type = 'walker'
+            if var == 1:
+                folder_var = '1'
+            elif var == 2:
+                folder_var = '2'
+            else:
+                folder_var = '0'
+        elif type == 2:
+            folder_type = 'lobber'
+            if var == 1:
+                folder_var = '1'
+            elif var == 2:
+                folder_var = '2'
+            else:
+                folder_var = '2'
+        else:
+            folder_type = 'walker'
+            folder_var = '0'
 
 
+        self.deco = pygame.image.load(f'images/enemies/{folder_type}/{folder_var}{folder_color}/top_deco.png')
         self.image = self.deco
         self.rect = self.image.get_rect(midbottom = self.enemy.rect.midtop)
 
